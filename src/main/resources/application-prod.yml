@@ -3,4 +3,26 @@ server:
     encoding:
       charset: utf-8
       force: true
-  port: 5000
+    # url rewrite 문제 해결
+    session:
+      tracking-modes: cookie
+  port: 5000 # 배포하면 방화벽오픈돼있는 포트가 기본 5000이다.
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${RDS_HOST}:3306/blogdb
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_batch_fetch_size: 10
+    open-in-view: false
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: INFO # ?에 들어가는 것을 보여줌
+    shop.mtcoding.blog: INFO # 이러면 trace - debug - info - warn - error 이 중에서 인포 이상만 뜬다. 즉 trace, debug 제외하고 다 뜸.
